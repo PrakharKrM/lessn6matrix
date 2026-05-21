@@ -28,7 +28,8 @@ jobs:
     define_concurrenc3:
         concurrency:
             group: test2
-        runs-on: windows-lates
+            cancel-in-progress: true
+        runs-on: windows-latest
         steps:
             - name: Run exho job on concurrency group 1 from second group
               id: step1
@@ -39,7 +40,7 @@ jobs:
     
     base_job:
         name: Base job on which second job will depend
-        runs-on: ubunutu-latest
+        runs-on: ubuntu-latest
         steps:
             - run: 
                 echo "Base job executed successfully."
