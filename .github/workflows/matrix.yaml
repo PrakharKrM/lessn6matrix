@@ -57,3 +57,24 @@ jobs:
                 write-output "This job completed after execution of first job"
         
 
+    matrix_job:
+        name: Define matrix startegy to test it
+        concurrency:
+            group: test2
+        strategy:
+            matrix:
+                runner-os: ['ubuntu-latest', 'mac-os']
+                os-version: ["1234", "X867dbf", "Prakhar"]
+                include:
+                    - runner-os: windows-latest
+            
+                exclude:
+                    - runner-os: mac-os
+                      os-version: Prakhar
+                
+                    - os-version: X867dbf
+
+        runs-on: ${{matrix.runner-os}}
+        steps:
+            - run: | 
+                echo "This is running using runner os ${{matrix.runner-os}} and ${{matrix.os-version}}"
