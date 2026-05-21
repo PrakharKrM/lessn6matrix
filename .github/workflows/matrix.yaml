@@ -1,0 +1,58 @@
+name: Test Matrix strategy of Github actions
+
+on: push
+
+jobs:
+    define_concurrenct:
+        concurrency:
+            group: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Run exho job on concurrency group 1
+              id: step1
+              run: |
+                echo "THis is concurrency job first from first group."
+                sleep 10
+
+    define_concurrency2:
+        concurrency:
+            group: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Run exho job on concurrency group 2
+              id: step1
+              run: |
+                echo "THis is concurrency job seond of first group."
+                sleep 10
+
+    define_concurrenc3:
+        concurrency:
+            group: test2
+        runs-on: windows-lates
+        steps:
+            - name: Run exho job on concurrency group 1 from second group
+              id: step1
+              run: |
+                echo "THis is concurrency job first from second group"
+                sleep 10
+
+    
+    base_job:
+        name: Base job on which second job will depend
+        runs-on: ubunutu-latest
+        steps:
+            - run: 
+                echo "Base job executed successfully."
+    
+    second_job:
+        name: This job depend on base job
+        runs-on: windows-latest
+        needs: 
+            - base_job
+        steps:
+            - name: Run command in powershell
+              shell: pwsh
+              run: | 
+                write-output "This job completed after execution of first job"
+        
+
